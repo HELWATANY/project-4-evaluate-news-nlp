@@ -27,6 +27,7 @@ let textapi = new aylien({
  */
 // Require Express to run server and routes
 const express = require('express')
+const router = express.Router()
 
 // Start up an instance of app
 const app = express()
@@ -54,16 +55,18 @@ const server = app.listen(port, listening)
 /**
  * ROUTES
  */
-app.get('/', function (req, res) {
-    // res.sendFile('dist/index.html')
-    res.sendFile(path.resolve('src/client/views/index.html'))
+router.get('/', function (req, res) {
+    res.sendFile('dist/index.html')
+    // res.sendFile(path.resolve('src/client/views/index.html'))
 })
 
-app.get('/test', function (req, res) {
+router.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
 
-app.post('/sentiment-analysis',handlePostStatement)
+router.post('/sentiment-analysis',handlePostStatement)
+
+app.use(`/.netlify/functions/server`, router);
 
 
 /**
@@ -89,4 +92,5 @@ function handlePostStatement(req, res) {
     });
 }
 
+module.exports = app;
 module.exports.handler = serverless(app);

@@ -11,6 +11,9 @@ const ip = require('ip')
 // Setup API mockup
 const mockAPIResponse = require('./mockAPI.js')
 
+// Setup Serverless HTTP
+const serverless = require('serverless-http');
+
 // Setup Aylien SDK
 const aylien = require('aylien_textapi')
 let textapi = new aylien({
@@ -85,3 +88,5 @@ function handlePostStatement(req, res) {
         }
     });
 }
+
+module.exports.handler = serverless(app);
